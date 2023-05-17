@@ -168,52 +168,70 @@
 document.addEventListener('pjax:send', () => {
   Pace.restart()
 })
-</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatat_img.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">205</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">37</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="程序园"><span class="site-name">程序园</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Kafka 的文件存储机制</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-09-16T07:10:37.000Z" title="发表于 2021-09-16 15:10:37">2021-09-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Kafka/">Kafka</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">730</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Kafka 的文件存储机制"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="1-数据存储形式"><a href="#1-数据存储形式" class="headerlink" title="1. 数据存储形式"></a>1. 数据存储形式</h1><p><img src="/img/kafka/kafka_5/1.png" alt=""><br>Kafka 中消息是以 topic 进行分类的，生产者生产消息，消费者消费消息，都是面向 topic 的。<br>topic 是逻辑上的概念，而 partition 是物理上的概念，每个 partition 对应于一个 log 文件，该 log 文件中存储的就是 producer 生产的数据。Producer 生产的数据会被不断追加到该log 文件末端，且每条数据都有自己的 offset。消费者组中的每个消费者，都会实时记录自己消费到了哪个offset，以便出错恢复时，从上次的位置继续消费。<br><img src="/img/kafka/kafka_5/2.png" alt=""></p>
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatat_img.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">205</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">37</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="程序园"><span class="site-name">程序园</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Kafka 的文件存储机制</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-09-16T07:10:37.000Z" title="发表于 2021-09-16 15:10:37">2021-09-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Kafka/">Kafka</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">731</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Kafka 的文件存储机制"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="1-数据存储形式">1. 数据存储形式</h1>
+<p><img src="/img/kafka/kafka_5/1.png" alt=""><br>
+Kafka 中消息是以 topic 进行分类的，生产者生产消息，消费者消费消息，都是面向 topic 的。<br>
+topic 是逻辑上的概念，而 partition 是物理上的概念，每个 partition 对应于一个 log 文件，该 log 文件中存储的就是 producer 生产的数据。Producer 生产的数据会被不断追加到该log 文件末端，且每条数据都有自己的 offset。消费者组中的每个消费者，都会实时记录自己消费到了哪个offset，以便出错恢复时，从上次的位置继续消费。<br>
+<img src="/img/kafka/kafka_5/2.png" alt=""></p>
 <ul>
 <li>一个topic由多个分区组成</li>
 <li>一个分区（partition）由多个 segment（段）组成</li>
-<li><p>一个 segment（段）由多个文件组成（log、index、timeindex）</p>
-<h1 id="2-日志文件"><a href="#2-日志文件" class="headerlink" title="2. 日志文件"></a>2. 日志文件</h1><p>由于生产者生产的消息会不断追加到 log 文件末尾，为防止 log 文件过大导致数据定位效率低下，Kafka 采取了<code>分片</code>和<code>索引</code>机制，将每个 partition 分为多个 segment。<br>每个 segment 对应三个文件——“.index”文件、“.log”文件和“.timeindex”文件。这些文件位于一个文件夹下，该文件夹的命名规则为：<code>topic名称+分区序号</code>。例如，first 这个 topic 有三个分区，则其对应的文件夹为 first- 0，first-1，first-2，数据文件夹总包含以下内容：<br><img src="/img/kafka/kafka_5/3.png" alt=""></p>
+<li>一个 segment（段）由多个文件组成（log、index、timeindex）</li>
+</ul>
+<h1 id="2-日志文件">2. 日志文件</h1>
+<p>由于生产者生产的消息会不断追加到 log 文件末尾，为防止 log 文件过大导致数据定位效率低下，Kafka 采取了<code>分片</code>和<code>索引</code>机制，将每个 partition 分为多个 segment。<br>
+每个 segment 对应三个文件——“.index”文件、“.log”文件和“.timeindex”文件。这些文件位于一个文件夹下，该文件夹的命名规则为：<code>topic名称+分区序号</code>。例如，first 这个 topic 有三个分区，则其对应的文件夹为 first- 0，first-1，first-2，数据文件夹总包含以下内容：<br>
+<img src="/img/kafka/kafka_5/3.png" alt=""></p>
 <table>
-  <tr>
-      <th>文件名</th>
-      <th>说明</th>
-  </tr>
-  <tr>
-      <td>00000000000169821432.index</td>
-      <td>索引文件，根据offset查找数据就是通过该索引文件来操作的</td>
-  </tr>
-  <tr>
-      <td>00000000000169821432.log</td>
-      <td>日志数据文件</td>
-  </tr>
-  <tr>
-      <td>00000000000169821432.timeindex</td>
-      <td>时间索引</td>
-  </tr>
-  <tr>
-      <td>leader-epoch-checkpoint</td>
-      <td>持久化每个partition leader对应的LEO（log end offset、日志文件中下一条待写入消息的offset）</td>
-  </tr>
-  <tr>
-      <td>partition.metadata</td>
-      <td>分区的元数据</td>
-  </tr>
+	<tr>
+		<th>文件名</th>
+		<th>说明</th>
+	</tr>
+	<tr>
+		<td>00000000000169821432.index</td>
+		<td>索引文件，根据offset查找数据就是通过该索引文件来操作的</td>
+	</tr>
+	<tr>
+		<td>00000000000169821432.log</td>
+		<td>日志数据文件</td>
+	</tr>
+	<tr>
+		<td>00000000000169821432.timeindex</td>
+		<td>时间索引</td>
+	</tr>
+	<tr>
+		<td>leader-epoch-checkpoint</td>
+		<td>持久化每个partition leader对应的LEO（log end offset、日志文件中下一条待写入消息的offset）</td>
+	</tr>
+	<tr>
+		<td>partition.metadata</td>
+		<td>分区的元数据</td>
+	</tr>
 </table>
-</li>
-<li><p>每个日志文件的文件名为起始偏移量，因为每个分区的起始偏移量是0，所以，分区的日志文件都以<code>0000000000000000000.log</code>开始</p>
-</li>
+<ul>
+<li>每个日志文件的文件名为起始偏移量，因为每个分区的起始偏移量是0，所以，分区的日志文件都以<code>0000000000000000000.log</code>开始</li>
 <li>默认的每个日志文件最大为<code>「log.segment.bytes=1024*1024*1024」1G</code></li>
-<li>为了简化根据offset查找消息，Kafka日志文件名设计为开始的偏移量<h1 id="3-写入消息"><a href="#3-写入消息" class="headerlink" title="3. 写入消息"></a>3. 写入消息</h1><img src="/img/kafka/kafka_5/4.png" alt=""></li>
+<li>为了简化根据offset查找消息，Kafka日志文件名设计为开始的偏移量</li>
+</ul>
+<h1 id="3-写入消息">3. 写入消息</h1>
+<p><img src="/img/kafka/kafka_5/4.png" alt=""></p>
+<ul>
 <li>新的消息总是写入到最后的一个日志文件中</li>
-<li>该文件如果到达指定的大小（默认为：1GB）时，将滚动到一个新的文件中<h1 id="4-读取消息"><a href="#4-读取消息" class="headerlink" title="4. 读取消息"></a>4. 读取消息</h1><img src="/img/kafka/kafka_5/5.png" alt=""></li>
+<li>该文件如果到达指定的大小（默认为：1GB）时，将滚动到一个新的文件中</li>
+</ul>
+<h1 id="4-读取消息">4. 读取消息</h1>
+<p><img src="/img/kafka/kafka_5/5.png" alt=""></p>
+<ul>
 <li>根据「offset」首先需要找到存储数据的 segment 段（注意：offset指定分区的全局偏移量）</li>
 <li>然后根据这个「全局分区offset」找到相对于文件的「segment段offset」</li>
 </ul>
 <p><img src="/img/kafka/kafka_5/6.png" alt=""></p>
 <ul>
 <li>最后再根据 「segment 段 offset」读取消息</li>
-<li>为了提高查询效率，每个文件都会维护对应的范围内存，查找的时候就是使用简单的二分查找<h1 id="5-删除消息"><a href="#5-删除消息" class="headerlink" title="5. 删除消息"></a>5. 删除消息</h1></li>
+<li>为了提高查询效率，每个文件都会维护对应的范围内存，查找的时候就是使用简单的二分查找</li>
+</ul>
+<h1 id="5-删除消息">5. 删除消息</h1>
+<ul>
 <li>在Kafka中，消息是会被定期清理的。一次删除一个segment段的日志文件</li>
 <li>Kafka的日志管理器，会根据Kafka的配置，来决定哪些文件可以被删除</li>
 </ul>

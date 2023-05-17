@@ -168,64 +168,71 @@
 document.addEventListener('pjax:send', () => {
   Pace.restart()
 })
-</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatat_img.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">205</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">37</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="程序园"><span class="site-name">程序园</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Kafka 数据清理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-09-18T08:25:19.000Z" title="发表于 2021-09-18 16:25:19">2021-09-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Kafka/">Kafka</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">953</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Kafka 数据清理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="kafka数据清理"><a href="#kafka数据清理" class="headerlink" title="kafka数据清理"></a>kafka数据清理</h1><p>Kafka 的消息存储在磁盘中，为了控制磁盘占用空间，Kafka 需要不断地对过去的一些消息进行清理工作。Kafka 的每个分区都有很多的日志文件，这样也是为了方便进行日志的清理。在 Kafka 中，提供两种日志清理方式：</p>
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatat_img.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">205</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">37</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="程序园"><span class="site-name">程序园</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Kafka 数据清理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-09-18T08:25:19.000Z" title="发表于 2021-09-18 16:25:19">2021-09-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Kafka/">Kafka</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">954</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Kafka 数据清理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="kafka数据清理">kafka数据清理</h1>
+<p>Kafka 的消息存储在磁盘中，为了控制磁盘占用空间，Kafka 需要不断地对过去的一些消息进行清理工作。Kafka 的每个分区都有很多的日志文件，这样也是为了方便进行日志的清理。在 Kafka 中，提供两种日志清理方式：</p>
 <ul>
 <li>日志删除（Log Deletion）：按照指定的策略直接删除不符合条件的日志。</li>
 <li>日志压缩（Log Compaction）：按照消息的 key 进行整合，有相同 key 的但有不同 value 值，只保留最后一个版本。</li>
 </ul>
 <p>在Kafka的broker或topic配置中：</p>
 <table>
-    <tr>
-        <th>配置项</th>
-        <th>配置值</th>
-        <th>说明</th>
-    </tr>
-    <tr>
-        <td>log.cleaner.enable</td>
-        <td>true（默认）</td>
-        <td>开启自动清理日志功能</td>
-    </tr>
-    <tr>
-        <td>log.cleanup.policy</td>
-        <td>delete（默认）</td>
-        <td>删除日志</td>
-    </tr>
-    <tr>
-        <td>log.cleanup.policy</td>
-        <td>compaction</td>
-        <td>压缩日志</td>
-    </tr>
-    <tr>
-        <td>log.cleanup.policy</td>
-        <td>delete，compact</td>
-        <td>同时支持删除、压缩</td>
-    </tr>
+	<tr>
+		<th>配置项</th>
+		<th>配置值</th>
+		<th>说明</th>
+	</tr>
+	<tr>
+		<td>log.cleaner.enable</td>
+		<td>true（默认）</td>
+		<td>开启自动清理日志功能</td>
+	</tr>
+	<tr>
+		<td>log.cleanup.policy</td>
+		<td>delete（默认）</td>
+		<td>删除日志</td>
+	</tr>
+	<tr>
+		<td>log.cleanup.policy</td>
+		<td>compaction</td>
+		<td>压缩日志</td>
+	</tr>
+	<tr>
+		<td>log.cleanup.policy</td>
+		<td>delete，compact</td>
+		<td>同时支持删除、压缩</td>
+	</tr>
 </table>
-
 <p>日志删除是以段（segment日志）为单位来进行定期清理的。</p>
-<h2 id="日志删除（Log-Deletion）"><a href="#日志删除（Log-Deletion）" class="headerlink" title="日志删除（Log Deletion）"></a>日志删除（Log Deletion）</h2><p>Kafka 日志管理器中会有一个专门的日志删除任务来定期检测和删除不符合保留条件的日志分段文件，这个周期可以通过 broker 端参数<code>log.retention.check.interval.ms</code>来配置，默认值为 300,000，即 5 分钟。当前日志分段的保留策略有 3 种：</p>
+<h2 id="日志删除（Log-Deletion）">日志删除（Log Deletion）</h2>
+<p>Kafka 日志管理器中会有一个专门的日志删除任务来定期检测和删除不符合保留条件的日志分段文件，这个周期可以通过 broker 端参数<code>log.retention.check.interval.ms</code>来配置，默认值为 300,000，即 5 分钟。当前日志分段的保留策略有 3 种：</p>
 <ol>
 <li>基于时间的保留策略</li>
 <li>基于日志大小的保留策略</li>
 <li>基于日志起始偏移量的保留策略</li>
 </ol>
 <p><img src="/img/kafka/kafka_11/1.png" alt=""></p>
-<h3 id="1-基于时间的保留策略"><a href="#1-基于时间的保留策略" class="headerlink" title="1. 基于时间的保留策略"></a>1. 基于时间的保留策略</h3><p>以下三种配置可以指定如果Kafka中的消息超过指定的阈值，就会将日志进行自动清理：</p>
+<h3 id="1-基于时间的保留策略">1. 基于时间的保留策略</h3>
+<p>以下三种配置可以指定如果Kafka中的消息超过指定的阈值，就会将日志进行自动清理：</p>
 <ul>
 <li>log.retention.hours</li>
 <li>log.retention.minutes</li>
-<li>log.retention.ms</li>
+<li><a target="_blank" rel="noopener" href="http://log.retention.ms">log.retention.ms</a></li>
 </ul>
 <p>其中，优先级为<code>log.retention.ms &gt; log.retention.minutes &gt; log.retention.hours</code>。默认情况，在broker中，配置如下：<code>log.retention.hours=168</code>，也就是，默认日志的保留时间为 168 小时，相当于保留 7 天。</p>
 <p>删除日志分段时：</p>
 <ol>
 <li>从日志文件对象中所维护日志分段的跳跃表中移除待删除的日志分段，以保证没有线程对这些日志分段进行读取操作</li>
 <li>将日志分段文件添加上“.deleted”的后缀（也包括日志分段对应的索引文件）</li>
-<li>Kafka 的后台定时任务会定期删除这些“.deleted”为后缀的文件，这个任务的延迟执行时间可以通过<code>file.delete.delay.ms</code>参数来设置，默认值为 60000，即 1 分钟。<h3 id="2-基于日志大小的保留策略"><a href="#2-基于日志大小的保留策略" class="headerlink" title="2. 基于日志大小的保留策略"></a>2. 基于日志大小的保留策略</h3>日志删除任务会检查当前日志的大小是否超过设定的阈值来寻找可删除的日志分段的文件集合。可以通过 broker 端参数<code>log.retention.bytes</code>来配置，默认值为 -1，表示无穷大。如果超过该大小，会自动将超出部分删除。</li>
+<li>Kafka 的后台定时任务会定期删除这些“.deleted”为后缀的文件，这个任务的延迟执行时间可以通过<code>file.delete.delay.ms</code>参数来设置，默认值为 60000，即 1 分钟。</li>
 </ol>
+<h3 id="2-基于日志大小的保留策略">2. 基于日志大小的保留策略</h3>
+<p>日志删除任务会检查当前日志的大小是否超过设定的阈值来寻找可删除的日志分段的文件集合。可以通过 broker 端参数<code>log.retention.bytes</code>来配置，默认值为 -1，表示无穷大。如果超过该大小，会自动将超出部分删除。</p>
 <p><font color=red>注意：</font><code>log.retention.bytes</code>配置的是日志文件的总大小，而不是单个的日志分段的大小，一个日志文件包含多个日志分段。</p>
-<h3 id="3-基于日志起始偏移量保留策略"><a href="#3-基于日志起始偏移量保留策略" class="headerlink" title="3. 基于日志起始偏移量保留策略"></a>3. 基于日志起始偏移量保留策略</h3><p>每个 segment 日志都有它的起始偏移量，如果起始偏移量小于 logStartOffset，那么这些日志文件将会标记为删除。</p>
-<h2 id="日志压缩（Log-Compaction）"><a href="#日志压缩（Log-Compaction）" class="headerlink" title="日志压缩（Log Compaction）"></a>日志压缩（Log Compaction）</h2><p>Log Compaction 是默认的日志删除之外的清理过时数据的方式。它会将相同的 key 对应的数据只保留一个版本。<br><img src="/img/kafka/kafka_11/2.png" alt=""></p>
+<h3 id="3-基于日志起始偏移量保留策略">3. 基于日志起始偏移量保留策略</h3>
+<p>每个 segment 日志都有它的起始偏移量，如果起始偏移量小于 logStartOffset，那么这些日志文件将会标记为删除。</p>
+<h2 id="日志压缩（Log-Compaction）">日志压缩（Log Compaction）</h2>
+<p>Log Compaction 是默认的日志删除之外的清理过时数据的方式。它会将相同的 key 对应的数据只保留一个版本。<br>
+<img src="/img/kafka/kafka_11/2.png" alt=""></p>
 <ul>
 <li>Log Compaction 执行后，offset 将不再连续，但依然可以查询 Segment</li>
 <li>Log Compaction 执行前后，日志分段中的每条消息偏移量保持不变。Log Compaction 会生成一个新的 Segment 文件</li>
